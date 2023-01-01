@@ -1,6 +1,6 @@
 package dits.gov.bd;
 
-import dits.gov.bd.auth.entity.ERole;
+import dits.gov.bd.auth.enumeration.ERole;
 import dits.gov.bd.auth.entity.Role;
 import dits.gov.bd.auth.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,15 @@ public class DitsApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		try {
 			if (roleRepository.findAll().isEmpty()) {
-				Role role = new Role();
-				role.setName(ERole.ROLE_EMPLOYEE.name());
-				roleRepository.save(role);
-				Role role2 = new Role();
-				role2.setName(ERole.ROLE_ADMIN.name());
-				roleRepository.save(role2);
+				Role roleAdmin = new Role();
+				roleAdmin.setName(ERole.ROLE_ADMIN.name());
+				roleRepository.save(roleAdmin);
+				Role roleUser = new Role();
+				roleUser.setName(ERole.ROLE_USER.name());
+				roleRepository.save(roleUser);
+				Role roleTaxPayer = new Role();
+				roleTaxPayer.setName(ERole.ROLE_TAXPAYER.name());
+				roleRepository.save(roleTaxPayer);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

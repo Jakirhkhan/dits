@@ -18,8 +18,8 @@ public class UserController {
         return new MessageResponse("Public ");
     }
 
-    @GetMapping("/employee")
-    @PreAuthorize("hasRole('EMPLOYEE') ")
+    @GetMapping("/taxpayer")
+    @PreAuthorize("hasRole('TAXPAYER') ")
     public MessageResponse employeeAccess() {
 
         return new MessageResponse("Employee zone");

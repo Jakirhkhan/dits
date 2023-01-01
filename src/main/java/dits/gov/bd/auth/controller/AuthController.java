@@ -1,7 +1,7 @@
 package dits.gov.bd.auth.controller;
 
 
-import dits.gov.bd.auth.entity.ERole;
+import dits.gov.bd.auth.enumeration.ERole;
 import dits.gov.bd.auth.entity.User;
 import dits.gov.bd.auth.entity.Role;
 import dits.gov.bd.auth.repository.RoleRepository;
@@ -74,9 +74,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
-
-        System.out.println(signUpRequest.toString());
-
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: username is already taken!"));
         }
@@ -85,33 +82,42 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        // Create new employee account
-        User employee = new User(
+        // Create new taxpayer account
+        User user = new User(
                 signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
-                null
+                signUpRequest.getEmail(),
+                null,
+                signUpRequest.getNid(),
+                signUpRequest.getTin(),
+                signUpRequest.getFirstName(),
+                signUpRequest.getLastName(),
+                signUpRequest.getZone(),
+                signUpRequest.getCircle(),
+                signUpRequest.getGender(),
+                signUpRequest.getUserStatus(),
+                signUpRequest.getCreatedOn(),
+                signUpRequest.getUpdatedOn()
         );
 
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
-        System.out.println(strRoles);
         if (strRoles == null) {
-
-            Role employeeRole = roleRepository.findByName(String.valueOf(ERole.ROLE_EMPLOYEE))
+            Role employeeRole = roleRepository.findByName(String.valueOf(ERole.ROLE_TAXPAYER))
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(employeeRole);
-
         } else {
-
             strRoles.forEach(role -> {
-
                 if (role.equals("admin")) {
                     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(adminRole);
+                } else if (role.equals("user")) {
+                    Role adminRole = roleRepository.findByName(ERole.ROLE_USER.name())
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
                 } else {
-                    Role defaultRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE.name())
+                    Role defaultRole = roleRepository.findByName(ERole.ROLE_TAXPAYER.name())
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(defaultRole);
                 }
@@ -119,8 +125,8 @@ public class AuthController {
             });
         }
 
-        employee.setRoles(roles);
-        userRepository.save(employee);
+        user.setRoles(roles);
+        userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Employee registered successfully!"));
     }
