@@ -28,19 +28,26 @@ public class UserController {
         return new MessageResponse("Public ");
     }
     @GetMapping("/taxpayers")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TAXPAYER')")
     public List<TaxPayer> getAllTaxPayers() {
         return taxPayerService.getAllTaxPayers();
     }
 
     @GetMapping("/taxpayers/{id}")
+    @PreAuthorize("hasRole('TAXPAYER') ")
     public TaxPayer getTaxPayer(@PathVariable int id) {
         return taxPayerService.getTaxPayer(id);
     }
+    @GetMapping("/user-by-tin/{tin}")
+    //@PreAuthorize("hasRole('TAXPAYER') ")
+    public User getUserByTin(@PathVariable String tin) {
+        return taxPayerService.getTaxPayerByTin(tin);
+    }
 
-    @GetMapping("/taxpayer")
+    @GetMapping("/taxpayer-by-tin/{tin}")
     @PreAuthorize("hasRole('TAXPAYER') ")
-    public MessageResponse employeeAccess() {
-        return new MessageResponse("Employee zone");
+    public User getTaxPayerByTin(@PathVariable String tin) {
+        return taxPayerService.getTaxPayerByTin(tin);
     }
 
     @GetMapping("/admin")

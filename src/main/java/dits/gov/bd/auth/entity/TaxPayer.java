@@ -1,6 +1,7 @@
 package dits.gov.bd.auth.entity;
 
 import dits.gov.bd.auth.enumeration.Gender;
+import dits.gov.bd.auth.enumeration.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,13 +22,13 @@ public class TaxPayer extends BaseEntity{
     private String tin;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String userStatus;
+    private UserStatus userStatus;
     private String zone;
     private String circle;
     private String email;
     private Set<Role> roles = new HashSet<>();
 
-    public TaxPayer(int id, Date createdOn, Date updatedOn, String createdBy, String updatedBy, String name, String nid, String tin, Gender gender, String userStatus, String zone, String circle, String email, Set<Role> roles) {
+    public TaxPayer(int id, Date createdOn, Date updatedOn, String createdBy, String updatedBy, String name, String nid, String tin, Gender gender, UserStatus userStatus, String zone, String circle, String email, Set<Role> roles) {
         super(id, createdOn, updatedOn, createdBy, updatedBy);
         this.name = name;
         this.nid = nid;

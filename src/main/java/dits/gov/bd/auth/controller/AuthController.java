@@ -99,13 +99,13 @@ public class AuthController {
                 signUpRequest.getCreatedOn(),
                 signUpRequest.getUpdatedOn()
         );
-
+        //Set Roles
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
-            Role employeeRole = roleRepository.findByName(String.valueOf(ERole.ROLE_TAXPAYER))
+            Role taxPayerRole = roleRepository.findByName(String.valueOf(ERole.ROLE_TAXPAYER))
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(employeeRole);
+            roles.add(taxPayerRole);
         } else {
             strRoles.forEach(role -> {
                 if (role.equals("admin")) {

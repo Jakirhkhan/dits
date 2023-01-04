@@ -32,6 +32,10 @@ public class TaxPayerService {
         return setTaxpayer(userRepository.findById(id));
     }
 
+    public User getTaxPayerByTin(String tin){
+        return userRepository.getTaxPayerByTin(tin);
+    }
+
     private TaxPayer setTaxpayer(User user){
         TaxPayer taxPayer = new TaxPayer(
                 user.getId(),

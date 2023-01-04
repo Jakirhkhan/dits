@@ -1,6 +1,7 @@
 package dits.gov.bd.auth.entity;
 
 import dits.gov.bd.auth.enumeration.Gender;
+import dits.gov.bd.auth.enumeration.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +23,7 @@ public class User extends BaseEntity {
     private String tin;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String userStatus;
+    private UserStatus userStatus;
     private String zone;
     private String circle;
     private String email;
@@ -45,7 +46,7 @@ public class User extends BaseEntity {
                 String zone,
                 String circle,
                 Gender gender,
-                String userStatus,
+                UserStatus userStatus,
                 Date createdOn,
                 Date updatedOn
     ) {
